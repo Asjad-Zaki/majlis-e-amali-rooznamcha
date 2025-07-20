@@ -8,7 +8,7 @@ export class DatabaseService {
   // Tasks operations using direct table queries with type assertions
   static async getTasks(): Promise<Task[]> {
     try {
-      const { data, error } = await (supabase as any).from('tasks').select('*');
+      const { data, error } = await supabase.from('tasks').select('*');
       
       if (error) {
         console.error('Error fetching tasks:', error);
@@ -35,7 +35,7 @@ export class DatabaseService {
 
   static async createTask(task: Omit<Task, 'id' | 'createdAt'>): Promise<Task | null> {
     try {
-      const { data, error } = await (supabase as any).from('tasks').insert({
+      const { data, error } = await supabase.from('tasks').insert({
         title: task.title,
         description: task.description,
         status: task.status,
@@ -74,7 +74,7 @@ export class DatabaseService {
 
   static async updateTask(taskId: string, updates: Partial<Task>): Promise<boolean> {
     try {
-      const { error } = await (supabase as any).from('tasks').update({
+      const { error } = await supabase.from('tasks').update({
         title: updates.title,
         description: updates.description,
         status: updates.status,
@@ -99,7 +99,7 @@ export class DatabaseService {
 
   static async deleteTask(taskId: string): Promise<boolean> {
     try {
-      const { error } = await (supabase as any).from('tasks').delete().eq('id', taskId);
+      const { error } = await supabase.from('tasks').delete().eq('id', taskId);
 
       if (error) {
         console.error('Error deleting task:', error);
@@ -116,7 +116,7 @@ export class DatabaseService {
   // Notifications operations
   static async getNotifications(): Promise<Notification[]> {
     try {
-      const { data, error } = await (supabase as any).from('notifications').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('notifications').select('*').order('created_at', { ascending: false });
 
       if (error) {
         console.error('Error fetching notifications:', error);
@@ -139,7 +139,7 @@ export class DatabaseService {
 
   static async createNotification(notification: Omit<Notification, 'id' | 'timestamp' | 'read'>): Promise<boolean> {
     try {
-      const { error } = await (supabase as any).from('notifications').insert({
+      const { error } = await supabase.from('notifications').insert({
         title: notification.title,
         message: notification.message,
         type: notification.type
@@ -159,7 +159,7 @@ export class DatabaseService {
 
   static async markNotificationAsRead(notificationId: string): Promise<boolean> {
     try {
-      const { error } = await (supabase as any).from('notifications').update({ is_read: true }).eq('id', notificationId);
+      const { error } = await supabase.from('notifications').update({ is_read: true }).eq('id', notificationId);
 
       if (error) {
         console.error('Error marking notification as read:', error);
@@ -175,7 +175,7 @@ export class DatabaseService {
 
   static async deleteNotification(notificationId: string): Promise<boolean> {
     try {
-      const { error } = await (supabase as any).from('notifications').delete().eq('id', notificationId);
+      const { error } = await supabase.from('notifications').delete().eq('id', notificationId);
 
       if (error) {
         console.error('Error deleting notification:', error);
@@ -191,7 +191,7 @@ export class DatabaseService {
 
   static async clearAllNotifications(): Promise<boolean> {
     try {
-      const { error } = await (supabase as any).from('notifications').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      const { error } = await supabase.from('notifications').delete().neq('id', '00000000-0000-0000-0000-000000000000');
 
       if (error) {
         console.error('Error clearing notifications:', error);
@@ -208,7 +208,7 @@ export class DatabaseService {
   // Users/Profiles operations
   static async getProfiles(): Promise<Profile[]> {
     try {
-      const { data, error } = await (supabase as any).from('profiles').select('*');
+      const { data, error } = await supabase.from('profiles').select('*');
 
       if (error) {
         console.error('Error fetching profiles:', error);
