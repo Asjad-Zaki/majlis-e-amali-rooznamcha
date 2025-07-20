@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { LogOut, Users, Bell, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { useRealtime } from '@/contexts/RealtimeContext';
+import { useDatabaseRealtime } from '@/contexts/DatabaseRealtimeContext';
 import { useNotificationHandler } from './NotificationHandler';
 import NotificationPanel from './NotificationPanel';
 import jsPDF from 'jspdf';
@@ -24,7 +24,7 @@ const Header = ({
   notifications = 0,
   onNotificationClick
 }: HeaderProps) => {
-  const { notifications: realtimeNotifications, tasks, deleteNotification, clearAllNotifications } = useRealtime();
+  const { notifications: realtimeNotifications, tasks, deleteNotification, clearAllNotifications } = useDatabaseRealtime();
   
   const {
     isNotificationPanelOpen,
