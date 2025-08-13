@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import NotificationPanel, { Notification } from './NotificationPanel';
-import { useRealtime } from '@/contexts/RealtimeContext';
+import { useDatabaseRealtime } from '@/contexts/DatabaseRealtimeContext';
 
 interface NotificationHandlerProps {
   notifications: Notification[];
@@ -10,20 +10,14 @@ interface NotificationHandlerProps {
 
 const NotificationHandler = ({ notifications, onUpdateNotifications }: NotificationHandlerProps) => {
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
-  const { updateNotifications } = useRealtime();
+  const { markNotificationAsRead, clearAllNotifications } = useDatabaseRealtime();
 
   const handleMarkAsRead = (notificationId: string) => {
-    const updatedNotifications = notifications.map(notification => 
-      notification.id === notificationId 
-        ? { ...notification, read: true }
-        : notification
-    );
-    updateNotifications(updatedNotifications);
+    markNotificationAsRead(notificationId);
   };
 
   const handleMarkAllAsRead = () => {
-    const updatedNotifications = notifications.map(notification => ({ ...notification, read: true }));
-    updateNotifications(updatedNotifications);
+    clearAllNotifications();
   };
 
   const unreadNotifications = notifications.filter(n => !n.read).length;
@@ -51,20 +45,14 @@ const NotificationHandler = ({ notifications, onUpdateNotifications }: Notificat
 // Export hook for easier usage
 export const useNotificationHandler = ({ notifications, onUpdateNotifications }: NotificationHandlerProps) => {
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
-  const { updateNotifications } = useRealtime();
+  const { markNotificationAsRead, clearAllNotifications } = useDatabaseRealtime();
 
   const handleMarkAsRead = (notificationId: string) => {
-    const updatedNotifications = notifications.map(notification => 
-      notification.id === notificationId 
-        ? { ...notification, read: true }
-        : notification
-    );
-    updateNotifications(updatedNotifications);
+    markNotificationAsRead(notificationId);
   };
 
   const handleMarkAllAsRead = () => {
-    const updatedNotifications = notifications.map(notification => ({ ...notification, read: true }));
-    updateNotifications(updatedNotifications);
+    clearAllNotifications();
   };
 
   const unreadNotifications = notifications.filter(n => !n.read).length;
